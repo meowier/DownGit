@@ -7,6 +7,8 @@
 var downGitModule = angular.module('downGitModule', [
 ]);
 
+let proxy = 'https://proxy.hypnguyen.workers.dev/?';
+
 downGitModule.factory('downGitService', [
     '$http',
     '$q',
@@ -65,7 +67,7 @@ downGitModule.factory('downGitService', [
         }
 
         var mapFileAndDirectory = function(dirPaths, files, requestedPromises, progress){
-            $http.get(repoInfo.urlPrefix+dirPaths.pop()+repoInfo.urlPostfix).then(function(response) {
+            $http.get(proxy + encodeURIComponent(repoInfo.urlPrefix+dirPaths.pop()+repoInfo.urlPostfix)).then(function(response) {
                 for(var i=response.data.length-1; i>=0; i--){
                     if(response.data[i].type=="dir"){
                         dirPaths.push(response.data[i].path);
@@ -155,7 +157,7 @@ downGitModule.factory('downGitService', [
                     window.location = downloadUrl;
 
                 }else{
-                    $http.get(repoInfo.urlPrefix+repoInfo.resPath+repoInfo.urlPostfix).then(function(response) {
+                    $http.get(proxy + encodeURIComponent(repoInfo.urlPrefix+repoInfo.resPath+repoInfo.urlPostfix)).then(function(response) {
                         if(response.data instanceof Array){
                             downloadDir(progress);
                         }else{
